@@ -2,6 +2,25 @@
 #include "common.h"
 #include "cpor.h"
 
+#ifdef _WIN32
+#include <windows.h>
+static char *EncodingConvert(const char* strIn, int sourceCodepage, int targetCodepage)
+{
+	int unicodeLen = MultiByteToWideChar(sourceCodepage, 0, strIn, -1, NULL, 0);
+	wchar_t* pUnicode;
+	pUnicode = (wchar_t *)malloc((unicodeLen + 1) * sizeof(wchar_t));
+	memset(pUnicode, 0, (unicodeLen + 1) * sizeof(wchar_t));
+	MultiByteToWideChar(sourceCodepage, 0, strIn, -1, (LPWSTR)pUnicode, unicodeLen);
+	char * pTargetData = NULL;
+	int targetLen = WideCharToMultiByte(targetCodepage, 0, (LPWSTR)pUnicode, -1, pTargetData, 0, NULL, NULL);
+	pTargetData = (BYTE *)malloc((targetLen + 1) * sizeof(BYTE));
+	memset(pTargetData, 0, targetLen + 1);
+	WideCharToMultiByte(targetCodepage, 0, (LPWSTR)pUnicode, -1, pTargetData, targetLen, NULL, NULL);
+	free(pUnicode);
+	return pTargetData;
+}
+#endif
+
 /*ret: 0 - Cheating, 1 - Verified, -1 - error.*/
 napi_value CporVerify(napi_env env, napi_callback_info info) {
     napi_value argv[6];
@@ -48,6 +67,12 @@ napi_value CporVerify(napi_env env, napi_callback_info info) {
 
     NAPI_CALL_BASE(env, napi_get_value_uint32(env, argv[4], &lambda), ret_napi_error);
     NAPI_CALL_BASE(env, napi_get_value_uint32(env, argv[5], &block_size), ret_napi_error);
+
+    #ifdef _WIN32
+        char *old_filename = filename;
+        filename = EncodingConvert(old_filename, CP_UTF8, CP_ACP);
+        free(old_filename); old_filename = NULL;
+    #endif 
 
     ret = cpor_verify(filename, key_data, t_data, tag_data, lambda, block_size);
 
