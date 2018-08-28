@@ -14,7 +14,7 @@
           },
           'OS=="linux"', {
             'libraries': [
-              '/Users/dingyi/Genaro/node-cpor_linux/libcpor/lib/linux/libcpor.a'
+              '/media/psf/Home/Genaro/node-cpor_linux/libcpor/lib/linux/libcpor.a'
             ],
             'ldflags': [
               '-pthread',
@@ -22,7 +22,7 @@
           },
           'OS=="win"', {
             'libraries': [
-              '/Users/dingyi/Genaro/node-cpor_win32/libcpor/lib/win32/libcpor.a'
+              'Y:/Genaro/node-cpor_win32/libcpor/lib/win32/libcpor.a'
             ]
           }
         ]

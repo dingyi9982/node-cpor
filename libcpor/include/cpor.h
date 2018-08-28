@@ -31,7 +31,7 @@
 
 #include <openssl/bn.h>
 
-#ifdef WIN32
+#ifndef _WIN32
 #include <unistd.h>
 #endif
 
