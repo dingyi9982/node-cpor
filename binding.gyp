@@ -9,12 +9,12 @@
       'conditions': [
         [ 'OS == "mac"', {
             'libraries': [
-              '/Users/dingyi/Genaro/node-cpor/libcpor/lib/mac/libcpor.a'
+              '/Users/dingyi/Genaro/node-cpor_mac/libcpor/lib/mac/libcpor.a'
             ],
           },
           'OS=="linux"', {
             'libraries': [
-              '/Users/dingyi/Genaro/node-cpor/libcpor/lib/linux/libcpor.a'
+              '/Users/dingyi/Genaro/node-cpor_linux/libcpor/lib/linux/libcpor.a'
             ],
             'ldflags': [
               '-pthread',
@@ -22,7 +22,7 @@
           },
           'OS=="win"', {
             'libraries': [
-              '/Users/dingyi/Genaro/node-cpor/libcpor/lib/win32/libcpor.a'
+              '/Users/dingyi/Genaro/node-cpor_win32/libcpor/lib/win32/libcpor.a'
             ]
           }
         ]
