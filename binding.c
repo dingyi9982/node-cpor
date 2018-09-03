@@ -23,8 +23,8 @@ static char *EncodingConvert(const char* strIn, int sourceCodepage, int targetCo
 
 /*ret: 0 - Cheating, 1 - Verified, -1 - error.*/
 napi_value CporVerify(napi_env env, napi_callback_info info) {
-    napi_value argv[6];
-    size_t argc = 6;
+    napi_value argv[4];
+    size_t argc = 4;
 
     size_t temp = 0;
 
@@ -40,7 +40,7 @@ napi_value CporVerify(napi_env env, napi_callback_info info) {
 
     NAPI_CALL_BASE(env, napi_get_cb_info(env, info, &argc, argv, NULL, NULL), ret_napi_error);
 
-    if(argc != 6) {
+    if(argc != 4) {
         napi_throw_error(env, "EINVAL", "Invalid number of arguments");
         return ret_napi_error;
     }
@@ -65,8 +65,8 @@ napi_value CporVerify(napi_env env, napi_callback_info info) {
     tag_data = (char *)malloc(temp * sizeof(char));
     NAPI_CALL_BASE(env, napi_get_value_string_latin1(env, argv[3], tag_data, temp + 1, &temp), ret_napi_error);
 
-    NAPI_CALL_BASE(env, napi_get_value_uint32(env, argv[4], &lambda), ret_napi_error);
-    NAPI_CALL_BASE(env, napi_get_value_uint32(env, argv[5], &block_size), ret_napi_error);
+    // NAPI_CALL_BASE(env, napi_get_value_uint32(env, argv[4], &lambda), ret_napi_error);
+    // NAPI_CALL_BASE(env, napi_get_value_uint32(env, argv[5], &block_size), ret_napi_error);
 
     #ifdef _WIN32
         char *old_filename = filename;
@@ -74,11 +74,13 @@ napi_value CporVerify(napi_env env, napi_callback_info info) {
         free(old_filename); old_filename = NULL;
     #endif 
 
-    ret = cpor_verify(filename, key_data, t_data, tag_data, lambda, block_size);
+    // ret = cpor_verify(filename, key_data, t_data, tag_data, lambda, block_size);
+    ret = cpor_verify(filename, key_data, t_data, tag_data);
 
-    free(key_data); key_data = 0;
-    free(t_data); t_data = 0;
-    free(tag_data); tag_data = 0;
+    free(filename); filename = NULL;
+    free(key_data); key_data = NULL;
+    free(t_data); t_data = NULL;
+    free(tag_data); tag_data = NULL;
 
     NAPI_CALL_BASE(env, napi_create_int32(env, ret, &ret_napi), ret_napi_error);
 
