@@ -43,9 +43,9 @@ napi_value CporChallenge(napi_env env, napi_callback_info info) {
     }
 
     // get the length of params
-    // NAPI_CALL_BASE(env, napi_get_value_string_latin1(env, argv[0], NULL, 0, &temp), ret_napi_error);
-    // params = (char *)malloc(temp * sizeof(char));
-    // NAPI_CALL_BASE(env, napi_get_value_string_latin1(env, argv[0], params, temp + 1, &temp), ret_napi_error);
+    NAPI_CALL_BASE(env, napi_get_value_string_latin1(env, argv[0], NULL, 0, &temp), ret_napi_error);
+    params = (char *)malloc(temp * sizeof(char));
+    NAPI_CALL_BASE(env, napi_get_value_string_latin1(env, argv[0], params, temp + 1, &temp), ret_napi_error);
 
     // get the length of key_data
     NAPI_CALL_BASE(env, napi_get_value_string_latin1(env, argv[1], NULL, 0, &temp), ret_napi_error);
