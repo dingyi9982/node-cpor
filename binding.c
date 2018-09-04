@@ -23,7 +23,7 @@ static char *EncodingConvert(const char* strIn, int sourceCodepage, int targetCo
 
 napi_value CporChallenge(napi_env env, napi_callback_info info) {
     napi_value argv[3];
-    size_t argc = 0;
+    size_t argc = 3;
 
     size_t temp = 0;
 
@@ -70,7 +70,7 @@ napi_value CporChallenge(napi_env env, napi_callback_info info) {
 
 napi_value CporGetTags(napi_env env, napi_callback_info info) {
     napi_value argv[2];
-    size_t argc = 0;
+    size_t argc = 2;
 
     size_t temp = 0;
 
@@ -111,7 +111,7 @@ napi_value CporGetTags(napi_env env, napi_callback_info info) {
 
 napi_value CporProveFile(napi_env env, napi_callback_info info) {
     napi_value argv[4];
-    size_t argc = 0;
+    size_t argc = 4;
 
     size_t temp = 0;
 
@@ -166,7 +166,7 @@ napi_value CporProveFile(napi_env env, napi_callback_info info) {
 /*ret: 0 - Cheating, 1 - Verified, -1 - error.*/
 napi_value CporVerifyFile(napi_env env, napi_callback_info info) {
     napi_value argv[6];
-    size_t argc = 0;
+    size_t argc = 6;
 
     size_t temp = 0;
 
@@ -229,32 +229,10 @@ napi_value CporVerifyFile(napi_env env, napi_callback_info info) {
     return ret_napi;
 }
 
-napi_value Test(napi_env env, napi_callback_info info)
-{
-    napi_value ret_napi;
-    napi_value ret_napi_error;
-
-    size_t temp = 0;
-    char *params = 0;
-
-    napi_value argv[1];
-    size_t argc = 0;
-
-    NAPI_CALL_BASE(env, napi_get_cb_info(env, info, &argc, argv, NULL, NULL), ret_napi_error);
-
-    NAPI_CALL_BASE(env, napi_get_value_string_latin1(env, argv[0], NULL, 0, &temp), ret_napi_error);
-    params = (char *)malloc(temp * sizeof(char));
-    NAPI_CALL_BASE(env, napi_get_value_string_latin1(env, argv[0], params, temp + 1, &temp), ret_napi_error);
-
-    napi_create_int32(env, 10, &ret_napi);
-
-    return ret_napi;
-}
-
 // /*ret: 0 - Cheating, 1 - Verified, -1 - error.*/
 // napi_value CporVerify(napi_env env, napi_callback_info info) {
 //     napi_value argv[4];
-//     size_t argc = 0;
+//     size_t argc = 4;
 
 //     size_t temp = 0;
 
@@ -329,8 +307,6 @@ void Init(napi_env env, napi_value exports) {
     napi_property_descriptor descCporVerifyFile = { "CporVerifyFile", 0, CporVerifyFile, 0, 0, 0, napi_default, 0 };
     NAPI_CALL_RETURN_VOID(env, napi_define_properties(env, exports, 1, &descCporVerifyFile));
 
-    napi_property_descriptor descTest = { "Test", 0, Test, 0, 0, 0, napi_default, 0 };
-    NAPI_CALL_RETURN_VOID(env, napi_define_properties(env, exports, 1, &descTest));
     // napi_property_descriptor descCporVerify = { "CporVerify", 0, CporVerify, 0, 0, 0, napi_default, 0 };
     // NAPI_CALL_RETURN_VOID(env, napi_define_properties(env, exports, 1, &descCporVerify));
 }
