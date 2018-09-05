@@ -104,7 +104,7 @@ napi_value CporGetTags(napi_env env, napi_callback_info info) {
     free(challenge); challenge = NULL;
     free(tag_data); tag_data = NULL;
 
-    NAPI_CALL_BASE(env, napi_create_string_latin1(env, tags, sizeof(CPOR_challenge), &ret_napi), ret_napi_error);
+    NAPI_CALL_BASE(env, napi_create_string_latin1(env, tags, sizeof(CPOR_tag *), &ret_napi), ret_napi_error);
 
     return ret_napi;
 }
@@ -138,8 +138,9 @@ napi_value CporProveFile(napi_env env, napi_callback_info info) {
 
     // get the length of filename
     NAPI_CALL_BASE(env, napi_get_value_string_latin1(env, argv[1], NULL, 0, &temp), ret_napi_error);
-    filename = (char *)malloc(temp * sizeof(char));
+    filename = (char *)malloc((temp + 1) * sizeof(char));
     NAPI_CALL_BASE(env, napi_get_value_string_latin1(env, argv[1], filename, temp + 1, &temp), ret_napi_error);
+    filename[temp] = '\0';
 
     // get the length of challenge
     NAPI_CALL_BASE(env, napi_get_value_string_latin1(env, argv[2], NULL, 0, &temp), ret_napi_error);
@@ -192,8 +193,9 @@ napi_value CporVerifyFile(napi_env env, napi_callback_info info) {
 
     // get the length of filename
     NAPI_CALL_BASE(env, napi_get_value_string_latin1(env, argv[1], NULL, 0, &temp), ret_napi_error);
-    filename = (char *)malloc(temp * sizeof(char));
+    filename = (char *)malloc((temp + 1) * sizeof(char));
     NAPI_CALL_BASE(env, napi_get_value_string_latin1(env, argv[1], filename, temp + 1, &temp), ret_napi_error);
+    filename[temp] = '\0';
 
     // get the length of key_data
     NAPI_CALL_BASE(env, napi_get_value_string_latin1(env, argv[2], NULL, 0, &temp), ret_napi_error);
@@ -254,8 +256,9 @@ napi_value CporVerifyFile(napi_env env, napi_callback_info info) {
 
 //     // get the length of filename
 //     NAPI_CALL_BASE(env, napi_get_value_string_utf8(env, argv[0], NULL, 0, &temp), ret_napi_error);
-//     filename = (char *)malloc(temp * sizeof(char));
+//     filename = (char *)malloc((temp + 1) * sizeof(char));
 //     NAPI_CALL_BASE(env, napi_get_value_string_utf8(env, argv[0], filename, temp + 1, &temp), ret_napi_error);
+//     filename[temp] = '\0';
 
 //     // get the length of key_data
 //     NAPI_CALL_BASE(env, napi_get_value_string_latin1(env, argv[1], NULL, 0, &temp), ret_napi_error);

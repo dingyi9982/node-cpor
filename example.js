@@ -95,7 +95,6 @@ app.on('request', (req, res) => {
             let tagData = iconvlite.decode(tagDataBufferHelper.toBuffer(), 'ISO-8859-1');
 
             let challenge = CporChallenge(params, keyData, tData);
-            // let challenge = CporChallenge("a", "b", "c");
             if(challenge === null || challenge === "")
             {
                 console.log("CporChallenge failed!");
